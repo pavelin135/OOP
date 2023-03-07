@@ -8,11 +8,15 @@ protected:
 	int capacity;
 	int count;
 	double* ptr;
+	bool Check_ptr(double* a)
+		return a == NULL
 public:
 
 	MyArrayParent(int Dimension)
 	{
 		ptr = new double[Dimension];
+		if (Check_ptr(ptr))
+			return;
 		capacity = Dimension;
 		count = 0;
 	}
@@ -20,6 +24,8 @@ public:
 	MyArrayParent(double* arr, int len)
 	{
 		ptr = new double[len];
+		if (Check_ptr(ptr))
+			return;
 		capacity = len;
 		count = len;
 		for (int i = 0; i < len; i++)
@@ -33,6 +39,8 @@ public:
 		capacity = V.capacity;
 		count = V.count;
 		ptr = new double[capacity];
+		if (Check_ptr(ptr))
+			return;
 		for (int i = 0; i < count; i++)
 		{
 			ptr[i] = V.ptr[i];
@@ -84,19 +92,15 @@ public:
 		{
 			ptr[count] = value;
 			count++;
+			
 		}
-		else
-			return;
+		return;
 	}
 
 	void RemoveLastValue()
 	{
-		if (count > 0)
-		{
-			count--;
-		}
-		else
-			return;
+		count -= count > 0 ;
+		return;
 	}
 
 	int IndexOf(double a)
