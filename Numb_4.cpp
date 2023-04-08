@@ -34,7 +34,7 @@ public:
 		}
 	}
 
-	BaseString(int dim)
+	BaseString(const int dim)
 	{
 		len = 0;
 		capacity = dim;
@@ -57,35 +57,55 @@ public:
 	}
 	
 	
-	BaseString& operator=(BaseString& str)
+	BaseString& operator=(const BaseString& str)
 	{
 		char* ps = new char[str.capacity];
 		if (ps == NULL)
-		{
-			return str;
-		}
+			return *this;
 
-		for (int i = 0; i < len; i++)
-		{
+		for (int i = 0; i < str.len; i++)
 			ps[i] = str.p[i];
-		}
 
 		len = str.len;
 		capacity = str.capacity;
+
 		delete[] p;
 		p = ps;
 
 		return *this;
 	}
 
+	BaseString& operator=(const char* ptr)
+	{
+		int len = 0;
+		for (len; ptr[len] != '\0'; len++);
+
+		capacity = len > capacity ? len : capacity;
+
+		delete[] p;
+		p = new char[capacity];
+
+		for (int i = 0; i < len; i++)
+			p[i] = ptr[i];
+
+		return *this;
+	}
+};
+
+class String : public BaseString
+{
+public:
+	String(const char* ptr) : BaseString(ptr){}
+	String(const int dim) : BaseString(dim){}
+
 	int LongestWordIndex()
 	{
 		int maxWord = 0;
 		int index = 0;
-		for (int i = 0; p[i] != '\0'; i++)
+		for (int i = 0; i < len; i++)
 		{
 			int k = i;
-			for (k; !((p[k] == ' ') || (p[k] == '\0')); k++);
+			for (k; !((p[k] == ' ') || (k == len)); k++);
 
 			int currentWord = k - i;
 
@@ -101,10 +121,8 @@ public:
 };
 
 
-
 int main()
 {
-	BaseString a("asd"), b("aszx");
-	a = b;
-	
+	String a("asd asdasd asd");
+	std::cout << a.LongestWordIndex();
 }
