@@ -4,7 +4,7 @@ using namespace std;
 //Task 5.1
 
 //Task 5.2
-
+// в конструкторе MultyArray дописать delete[] ps
 class Exception : exception
 {
 protected:
