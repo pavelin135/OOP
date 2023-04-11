@@ -9,6 +9,12 @@ protected:
 public:
 	BaseString(const char* ptr)
 	{
+		if (ptr == NULL)
+		{
+			capacity = 0;
+			len = 0;
+			return;
+		}
 		capacity = 256;
 		len = 0;
 		p = new char[capacity];
@@ -34,8 +40,14 @@ public:
 		}
 	}
 
-	BaseString(const int dim)
+	BaseString(int dim)
 	{
+		if (dim < 0)
+		{
+			capacity = 0;
+			len = 0;
+			return;
+		}
 		len = 0;
 		capacity = dim;
 		p = new char[capacity];
@@ -54,14 +66,17 @@ public:
 			delete[] p;
 		}
 		len = 0;
+		capacity = 0;
 	}
 	
 	
 	BaseString& operator=(const BaseString& str)
 	{
+		if(this!=&str)
+		{
 		char* ps = new char[str.capacity];
 		if (ps == NULL)
-			return *this;
+			return str;
 
 		for (int i = 0; i < str.len; i++)
 			ps[i] = str.p[i];
@@ -71,22 +86,35 @@ public:
 
 		delete[] p;
 		p = ps;
-
+		}
 		return *this;
 	}
 
 	BaseString& operator=(const char* ptr)
 	{
-		int len = 0;
-		for (len; ptr[len] != '\0'; len++);
-
-		capacity = len > capacity ? len : capacity;
-
+		if (ptr == NULL)
+		{
+			return *this;
+		}
+		
+		int newlen = 0;
+		
+		for (newlen; ptr[newlen] != '\0'; newlen++);
+		
+		int newcapacity = newlen > capacity ? newlen : capacity;
+		
+		char* ps = new char[newcapacity];
+		
+		if (ps == NULL)
+			return *this;
+		
+		for (int i = 0; i < newlen; i++)
+			ps[i] = ptr[i];
+		
+		capacity = newcapacity;
+		
 		delete[] p;
-		p = new char[capacity];
-
-		for (int i = 0; i < len; i++)
-			p[i] = ptr[i];
+		p = ps;
 
 		return *this;
 	}
@@ -96,7 +124,7 @@ class String : public BaseString
 {
 public:
 	String(const char* ptr) : BaseString(ptr){}
-	String(const int dim) : BaseString(dim){}
+	String(int dim) : BaseString(dim){}
 
 	int LongestWordIndex()
 	{
