@@ -4,7 +4,7 @@ using namespace std;
 //Task 5.1
 
 //Task 5.2
-// в конструкторе MultyArray дописать delete[] ps
+
 class Exception : exception
 {
 protected:
@@ -72,24 +72,24 @@ public:
 	}
 };
 
-
+template <class T>
 class MultiArray
 {
 protected:
 	int dimStr;
 	int dimCol;
-	double** ptr;
+	T** ptr;
 
 public:
 	MultiArray(int x, int y) //x - string, y - coloumn
 	{
-		ptr = new double* [x];
+		ptr = new T* [x];
 		if (ptr == NULL)
 			return;
 
 		for (int i = 0; i < x; i++)
 		{
-			double* ps = new double[y];
+			T* ps = new T[y];
 			if (ps == NULL)
 				return;
 			ptr[i] = ps;
@@ -98,23 +98,23 @@ public:
 		dimCol = y;
 	}
 
-	
+
 	MultiArray(const MultiArray& a)
 	{
 		dimStr = a.dimStr;
 		dimCol = a.dimCol;
 
-		ptr = new double* [dimStr];
+		ptr = new T* [dimStr];
 		if (ptr == NULL)
 		{
 			dimStr = 0;
 			dimCol = 0;
 			return;
 		}
-		
+
 		for (int i = 0; i < dimStr; i++)
 		{
-			double* ps = new double[dimCol];
+			T* ps = new T[dimCol];
 			if (ps == NULL)
 				return;
 			ptr[i] = ps;
@@ -141,11 +141,16 @@ public:
 	}
 };
 
-class Matrix : public MultiArray
+template <class T>
+class Matrix : public MultiArray<T>
 {
+	using MultiArray<T>::dimStr;
+	using MultiArray<T>::dimCol;
+	using MultiArray<T>::ptr;
+
 	void repl(double* arr, int dim)
 	{
-		double sw = arr[dim - 1];
+		T sw = arr[dim - 1];
 		for (int i = dim - 1; i > 0; i--)
 		{
 			arr[i] = arr[i - 1];
@@ -153,7 +158,7 @@ class Matrix : public MultiArray
 		arr[0] = sw;
 	}
 public:
-	Matrix(int x, int y) : MultiArray(x, y)
+	Matrix(int x, int y) : MultiArray<T>(x, y)
 	{
 		for (int i = 0; i < x; i++)
 		{
@@ -167,7 +172,7 @@ public:
 	Matrix replRight()
 	{
 		Matrix a(*this);
-		
+
 		for (int st = 0; st < a.dimStr; st++)
 		{
 			int steps = a.dimCol;
@@ -202,13 +207,13 @@ public:
 		return Matrix(a);
 	}
 
-	double getElement(int a, int b)
+	T& getElement(int a, int b)
 	{
 		if (a > dimStr || b > dimCol)
 		{
 			throw IndexOutOfBounds(a, b, dimStr, dimCol);
 		}
-		
+
 		return ptr[a - 1][b - 1];
 	}
 };
@@ -217,5 +222,14 @@ public:
 
 int main()
 {
-	
+	Matrix<double> A(1, 2), B(1,1);
+	try
+	{
+		A + B;
+	}
+	catch (Exception& e)
+	{
+		e.print();
+	}
+
 }
