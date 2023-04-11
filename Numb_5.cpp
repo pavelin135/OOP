@@ -12,6 +12,9 @@ protected:
 public:
 	Exception(const char* c)
 	{
+		if (c == NULL)
+			return;
+			
 		int len = 0;
 
 		for (len; c[len] != '\0'; len++);
@@ -44,6 +47,10 @@ private:
 public:
 	WrongDimensionsException(int a, int b, int c, int d) : Exception("matrix dimension aren't equal")
 	{
+		if (a < 1 || b < 1 || c < 1 || d < 1)
+		{
+			return;
+		}
 		str1 = a; col1 = b;
 		str2 = c; col2 = d;
 	}
@@ -61,6 +68,10 @@ class IndexOutOfBounds : public Exception
 public:
 	IndexOutOfBounds(int a, int b, int c, int d) : Exception("wrong index of matrix")
 	{
+		if (a < 1 || b < 1 || c < 1 || d < 1)
+		{
+			return;
+		}
 		x = a; y = b;
 		z = c; w = d;
 	}
@@ -83,6 +94,10 @@ protected:
 public:
 	MultiArray(int x, int y) //x - string, y - coloumn
 	{
+		if (x < 1 || y < 1)
+		{
+			return;
+		}
 		ptr = new T* [x];
 		if (ptr == NULL)
 			return;
