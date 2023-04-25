@@ -35,7 +35,7 @@ public:
 			delete[] str;
 	}
 
-	virtual void print()
+	virtual void print() const
 	{
 		if (str != NULL)
 			cout << "Exception: " << str;
@@ -59,7 +59,7 @@ public:
 		str2 = c; col2 = d;
 	}
 
-	virtual void print()
+	virtual void print() const
 	{
 		if (str != NULL)
 			cout << "Exception: " << str << endl << "matrix dimension 1:\n" << str1 << " x " << col1 << endl
@@ -82,7 +82,7 @@ public:
 		x = a; y = b;
 		z = c; w = d;
 	}
-	void print()
+	virtual void print() const
 	{
 		if (str != NULL)
 			cout << "Exception: " << str << endl
@@ -168,13 +168,16 @@ public:
 
 	~MultiArray()
 	{
-		for (int i = 0; i < dimStr; i++)
+		if (ptr != NULL)
 		{
+			for (int i = 0; i < dimStr; i++)
+			{
 			if (ptr[i] != NULL)
 				delete[] ptr[i];
-		}
-		if (ptr != NULL)
+			}
+			
 			delete[] ptr;
+		}
 	}
 
 
@@ -243,7 +246,7 @@ public:
 		return a;
 	}
 
-	Matrix operator+(const Matrix& b)
+	Matrix operator+(const Matrix& b) const
 	{
 		if (dimStr != b.dimStr || dimCol != b.dimCol)
 		{
@@ -261,7 +264,7 @@ public:
 		return a;
 	}
 
-	const T& getElement(int a, int b)
+	const T& getElement(int a, int b) const
 	{
 		if (a > dimStr || b > dimCol || a < 1 || b < 1)
 		{
@@ -673,7 +676,7 @@ fstream& operator>>(fstream& f, Matrix<T>& a)
 	}
 	return f;
 }
-
+          
 
 
 int main()
