@@ -4,7 +4,7 @@
 using namespace std;
 
 
-class Exception : exception
+class Exception
 {
 protected:
 	char* str;
