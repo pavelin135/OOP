@@ -23,6 +23,9 @@ public:
 
 	LapTop& operator= (const LapTop& A)
 	{
+		LapTop* ptr = &A;
+		if (this == ptr)
+			return *this
 		model = A.model;
 		processor = A.processor;
 
