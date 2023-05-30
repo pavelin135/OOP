@@ -5,6 +5,12 @@ using namespace std;
 
 class LapTop
 {
+ptivate:
+	string model;
+	string processor;
+
+	int RAM;
+	int cost;
 public:
 	LapTop()
 	{
@@ -14,12 +20,6 @@ public:
 		RAM = 0;
 		cost = 0;
 	}
-
-	string model;
-	string processor;
-
-	int RAM;
-	int cost;
 
 	LapTop& operator= (const LapTop& A)
 	{
@@ -36,6 +36,9 @@ public:
 	}
 
 	friend bool operator< (const LapTop& A, const LapTop& B);
+	friend istream& operator>> (istream& f, LapTop& L);
+	friend fstream& operator<< (fstream& f, const LapTop& L);
+	friend fstream& operator>> (fstream& f, LapTop& L);
 };
 
 bool operator< (const LapTop& A, const LapTop& B)
