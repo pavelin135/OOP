@@ -15,6 +15,32 @@ class SuperHero
 	int amount_victories;
 	int rate;
 public:
+	SuperHero()
+	{
+		Nick = Name = Ability = Sickness = "None";
+		sex = 0;
+		Birth = amount_victories = rate = 0;
+	}
+
+	void setRate(int n)
+		rate = n;
+
+	void setName(string S)
+		Name = S;
+
+	void setAbility(string S)
+		Ability = S;
+
+
+	int getRate()
+		return rate;
+	
+	string getName()
+		return Name;
+
+	string getAbility()
+		return Ability;
+	
 
 };
 
