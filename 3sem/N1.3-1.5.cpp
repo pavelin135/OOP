@@ -10,7 +10,7 @@ class Queue
 	T elem;
 
 public:
-	Queue(const T A)
+	Queue(const T& A)
 	{
 		FirstElem = LastElem = this;
 
@@ -19,7 +19,7 @@ public:
 		
 	}
 
-	void push(const T A)
+	void push(const T& A)
 	{
 		Queue<T>* ptr = new Queue<T>(A);
 
@@ -61,7 +61,7 @@ public:
 	}
 
 	template <class T>
-	friend Queue<T>* filter(const Queue<T>& Q, T P);
+	friend Queue<T>* filter(const Queue<T>& Q, const T& P);
 
 	template <class T>
 	friend Queue<T>* operator++ (const Queue<T>& Q);
@@ -72,7 +72,7 @@ public:
 };
 
 template <class T>
-Queue<T>* filter(const Queue<T>& Q, T P)
+Queue<T>* filter(const Queue<T>& Q, const T& P)
 {
 	Queue<T>* new_Q = NULL;
 
