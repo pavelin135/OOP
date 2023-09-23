@@ -25,10 +25,10 @@ public:
 	void setRate(int n)
 		rate = n;
 
-	void setName(string S)
+	void setName(const string& S)
 		Name = S;
 
-	void setAbility(string S)
+	void setAbility(const string& S)
 		Ability = S;
 
 
@@ -81,10 +81,13 @@ public:
 };
 
 template <class T>
-list<T>* filter(list<T>& ls, int P)
+list<T>* filter(const list<T>& ls, int P)
 {
 	list<T>* L = new list<T>;
 
+	if (!L)
+		return NULL;
+		
 	list<Fraction>::iterator ptr = ls.begin();
 
 	for (ptr; ptr != ls.end(); ptr++)
@@ -94,12 +97,12 @@ list<T>* filter(list<T>& ls, int P)
 			L->push_back(F);
 	}
 
-	return L;
+	return L.begin() == L.end() ? NULL : L;
 }
 
 
 template <class T>
-void push(list<T>& ls, T elem)
+void push(list<T>& ls, const T& elem)
 {
 	list<Fraction>::iterator ptr = ls.begin();
 
