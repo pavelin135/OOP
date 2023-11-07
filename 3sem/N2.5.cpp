@@ -15,7 +15,7 @@ class Node
 	int height;
 
 
-	
+
 	bool checkH()
 	{
 		if ((left == NULL ? 0 : left->height) - (right == NULL ? 0 : right->height) > 1)
@@ -121,12 +121,12 @@ public:
 
 			right->parent = this;
 
-			right->height = std::max(
+			right->height = fmax(
 				right->right == NULL ? 1 : right->right->height + 1,
 				right->left == NULL ? 1 : right->left->height + 1
 			);
 
-			height = std::max(left == NULL ? 1 : left->height + 1, right->height + 1);
+			height = fmax(left == NULL ? 1 : left->height + 1, right->height + 1);
 		}
 		else
 		{
@@ -146,12 +146,12 @@ public:
 
 			left->parent = this;
 
-			left->height = std::max(
+			left->height = fmax(
 				left->left == NULL ? 1 : left->left->height + 1,
 				left->right == NULL ? 1 : left->right->height + 1
 			);
 
-			height = std::max(right == NULL ? 1 : right->height + 1, left->height + 1);
+			height = fmax(right == NULL ? 1 : right->height + 1, left->height + 1);
 		}
 	}
 
@@ -164,6 +164,8 @@ template <class T>
 class Tree
 {
 protected:
+
+	Node<T>* root;
 
 	void Add_R(Node<T>* P, Node<T>* Current)
 	{
@@ -234,7 +236,7 @@ protected:
 	}
 public:
 
-	Node<T>* root;
+	
 
 	Tree<T>() { root = NULL; }
 
@@ -288,41 +290,23 @@ class SplayTree : public Tree<T>
 {
 public:
 
-	SplayTree() : Tree<T>(this)
+	void Add_R(Node<T>* P)
 	{
-
-	}
-
-	void Add_R(Node<T>* P, Node<T>* Current)
-	{
-		std::cout << "mgm\n";
-
-		if (P->getElem() < Current->getElem())
+		if (!P)
+			return;
+		else if (!Tree<T>::root)
 		{
-			if (!Current->getLeft())
-			{
-				Current->setLeft(P);
-				P->setParent(Current);
-			}
-			else
-				Add_R(P, Current->getLeft());
-
-
+			Tree<T>::root = P;
 			return;
 		}
-		else
-		{
-			if (!Current->getRight())
-			{
-				Current->setRight(P);
-				P->setParent(Current);
-			}
-			else
-				Add_R(P, Current->getRight());
 
+		P->setRight(P->getElem() < Tree<T>::root->getElem() ? Tree<T>::root : NULL);
+		P->setLeft(P->getElem() >= Tree<T>::root->getElem() ? Tree<T>::root : NULL);
 
-			return;
-		}
+		Tree<T>::root->setParent(P);
+
+		Tree<T>::root = P;
+
 
 	}
 
@@ -352,16 +336,20 @@ public:
 
 	Node<T>* operator[] (const T& val)
 	{
-		if (!root)
+		if (!Tree::root)
 			return NULL;
 
-		Node<T>* ptr = Search(val, root);
+		Node<T>* ptr = Search(val, Tree::root);
 
 		if (!ptr)
 			return;
 
 		while (ptr->getParent() != NULL)
 			ptr->rotate();
+
+		Tree::root = ptr;
+
+		return Tree::root;
 	}
 
 };
@@ -371,5 +359,14 @@ public:
 
 int main()
 {
+	SplayTree<int> A;
 
+	int a;
+
+	std::cin >> a;
+
+	while (a != 999)
+	{
+		A.Add_R(new Node<int>(a));
+	}
 }
