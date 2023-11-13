@@ -140,14 +140,9 @@ public:
 			return;
 
 		int i = 0;
-		for (; i < len; i++)
-		{
-			if (!(e < arr[i]))
-			{
-				LiftRight(i);
-				break;
-			}
-		}
+		for (; i < len && e < arr[i]; i++);
+
+		LiftRight(i);
 
 		len++;
 
